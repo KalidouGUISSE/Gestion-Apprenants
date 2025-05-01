@@ -34,6 +34,8 @@ function loadController($route) : void {
         'telechargerExcel' => ['controller' => 'apprenant', 'action' => 'telechargerExcel'],
         'telechargerPDF'=> ['controller' => 'apprenant', 'action' => 'telechargerPDF'],
         'importerExcel' => ['controller' => 'apprenant', 'action' => 'importerExcel'],
+        'apprenants_attente' => ['controller' => 'apprenant', 'action' => 'page_apprenants'],
+        'page_ajout_apprenant' => ['controller' => 'apprenant', 'action' => 'pageAjoutApprenant'],
     ];
     
     if (!array_key_exists($route, $controllerMapping)){

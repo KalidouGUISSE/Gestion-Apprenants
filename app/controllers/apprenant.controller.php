@@ -50,14 +50,14 @@ function paginer(array $items, int $limit = 5): array {
 function page_apprenants() : void {
     $data = readData();
     $promotions = $data["apprenants"] ?? [];
-    // var_dump($promotions);
-    // die();
+    
+    
     $promotions = array_values($promotions);
+    if (($_REQUEST['route']) === 'apprenants_attente') {
+        $promotions = $data["listeattente"] ?? [];
+    }
     [$promosPagines, $total, $pages, $page] = paginer($promotions, 8);
 
-    // $promotionActive = getPromotionActive($data[Keys::PROMOTIONS->value] ?? []);
-    // $nbApprenants = $promotionActive ? getNombreApprenants($promotionActive) : 0;
-    // $nbReferentiels = $promotionActive ? getNombreReferentiels($promotionActive) : 0;
 
     $view = "apprenant/pageApprenant";
     require Includes::BASE_LAYOUT->value;
@@ -152,7 +152,7 @@ function telechargerPDF(): void {
 }
 
 
-function importerExcel() {
+function importerExcel() : void {
     if (!isset($_FILES['excel_file']) || $_FILES['excel_file']['error'] !== UPLOAD_ERR_OK) {
         echo "Erreur de téléchargement du fichier.";
         return;
@@ -192,18 +192,19 @@ function importerExcel() {
         $matriculesExistants = array_column($data["apprenants"], 'matricule');
         $emailsExistants = array_column($data["apprenants"], 'email');
 
+        $matriculesExistantslisteattente = array_column($data["apprenants"], 'matricule');
+        $emailsExistantslisteattente = array_column($data["apprenants"], 'email');
+
+
         // Ajouter seulement les nouveaux apprenants
         foreach ($apprenants as $nouveau) {
             if (!in_array($nouveau['matricule'], $matriculesExistants) && !in_array($nouveau['email'], $emailsExistants)) {
                 $data["apprenants"][] = $nouveau;
-            }else {
-                $listeattente[] = $nouveau;
-                var_dump($listeattente);
+            }elseif (!in_array($nouveau['matricule'], $matriculesExistantslisteattente) && !in_array($nouveau['email'], $emailsExistantslisteattente)) {
+                $data["listeattente"][] = $nouveau;
                 echo "L'apprenant avec le matricule {$nouveau['matricule']} ou l'email {$nouveau['email']} existe déjà.";
                 echo "<br>";  
-                die();
             }
-
         }
 
         writeData($data);
@@ -214,4 +215,11 @@ function importerExcel() {
     }
 
     exit;
+}
+
+function pageAjoutApprenant() {
+
+    $view = "apprenant/ajoutApprenant";
+    require Includes::BASE_LAYOUT->value;
+    // require_once __DIR__ . '/../views/apprenant/ajoutApprenant.php';
 }

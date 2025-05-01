@@ -309,34 +309,6 @@ function ajouterReferentiels(): void {
 
 
 
-function assignerReferentiels(): void {
-    // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //     $data = readData();
-    //     $referentiels = $data['referentielsNonAffecte'] ?? [];
-    //     $promoNom = $_POST['promo'] ?? '';
-    //     $referentielNom = $_POST['referentiel'] ?? '';
-
-    //     // Vérification de l'existence de la promo
-    //     $promotion = array_filter($data['promotions'], function ($promo) use ($promoNom) {
-    //         return isset($promo['idnom']) && $promo['idnom'] === $promoNom;
-    //     });
-
-    //     if (empty($promotion)) {
-    //         // Gérer l'erreur : promotion non trouvée
-    //         return;
-    //     }
-
-    //     // Ajout du référentiel à la promotion
-    //     addReferentielToPromotion($referentielNom, $promotion[0]);
-
-    //     // Sauvegarde des données
-    //     writeData($data);
-    // }
-    // redirect('promotions');
-
-
-}
-
 
 
 function addReferentielToPromotion($referentielNom, array &$newPromo): void {
