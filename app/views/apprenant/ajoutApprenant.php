@@ -1,8 +1,11 @@
 
 <?php
+session_start();
     require_once __DIR__ . '/../daguite/aside.php';
     require_once __DIR__ . '/../daguite/header.php';
     require_once __DIR__ . '/../daguite/nouveaupromo.php';
+    // var_dump($_SESSION['errors']);
+    // die();
 ?>
 
 <style>
@@ -99,6 +102,7 @@
         align-items: center;
         color: white;
         cursor: pointer;
+        pointer-events: none; /* Empêche les clics sur l'icône */
     }
     
     .upload-section {
@@ -120,6 +124,22 @@
         margin-bottom: 10px;
     }
     
+    /* Style pour l'input file personnalisé */
+    .file-upload {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
+    
+    .file-upload input[type=file] {
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+    }
+    
     .upload-btn {
         background-color: white;
         color: #2a9d8f;
@@ -128,6 +148,7 @@
         padding: 8px 15px;
         font-size: 12px;
         cursor: pointer;
+        display: inline-block;
     }
     
     .actions {
@@ -156,117 +177,122 @@
         color: white;
     }
 </style>
-<div class="dashboard-container">
+<div class="apprenant-container">
     <!-- Sidebar -->
     <?= $sidebar ?>
-
-    <main class="main-content">
-        <!-- Header -->
-        <?= $header ?>
-        <div class="apprenant-container">
         <h1 class="apprenant-titre">Ajout apprenant</h1>
-        
-        <div class="section">
-            <div class="section-header">
-                <h2 class="section-title">Informations de l'apprenant</h2>
-                <svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                </svg>
-            </div>
+        <!-- Header -->
+        <form id="form-apprenant" action="index.php?route=ajout_apprenant" method="post" enctype="multipart/form-data">
+        <?php if (!empty($_SESSION['errors']) && is_array($_SESSION['errors'])): ?>
+            <?php foreach ($_SESSION['errors'] as $erreur): ?>
+                <p style="color:red"><?= htmlspecialchars($erreur) ?></p>
+            <?php endforeach; ?>
+            <?php unset($_SESSION['errors']); ?>
+        <?php endif; ?>
+
             
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="prenom">Prénom(s)</label>
-                    <input type="text" id="prenom" name="prenom" placeholder="Prénom de l'apprenant">
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Informations de l'apprenant</h2>
+                    <svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                    </svg>
                 </div>
-                <div class="form-group">
-                    <label for="nom">Nom</label>
-                    <input type="text" id="nom" name="nom" placeholder="Nom de l'apprenant">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="prenom">Prénom(s)</label>
+                        <input type="text" id="prenom" name="prenom" placeholder="Prénom de l'apprenant">
+                    </div>
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input type="text" id="nom" name="nom" placeholder="Nom de l'apprenant">
+                    </div>
                 </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="date-naissance">Date de naissance</label>
-                    <div class="date-picker">
-                        <input type="text" id="date-naissance" name="date_naissance" placeholder="JJ/MM/AAAA">
-                        <div class="calendar-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date-naissance">Date de naissance</label>
+                        <div class="date-picker">
+                            <input type="date" id="date-naissance" name="date_naissance">
+                            <div class="calendar-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lieu-naissance">Lieu de naissance</label>
+                        <input type="text" id="lieu-naissance" name="lieu_naissance" placeholder="Lieu de naissance">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="adresse">Adresse</label>
+                        <input type="text" id="adresse" name="adresse" placeholder="Adresse complète">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Email de l'apprenant">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telephone">Téléphone</label>
+                        <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone">
+                    </div>
+                    <div class="form-group">
+                        <div class="upload-section">
+                            <div class="upload-icon">📄</div>
+                            <div class="file-upload">
+                                <input type="file" name="documents[]" multiple>
+                                <span class="upload-btn">Ajouter des document</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="lieu-naissance">Lieu de naissance</label>
-                    <input type="text" id="lieu-naissance" name="lieu_naissance" placeholder="Lieu de naissance">
-                </div>
             </div>
             
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="adresse">Adresse</label>
-                    <input type="text" id="adresse" name="adresse" placeholder="Adresse complète">
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Informations du tuteur</h2>
+                    <svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                    </svg>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Email de l'apprenant">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nom_tuteur">Prénom(s) & nom</label>
+                        <input type="text" id="nom_tuteur" name="nom_tuteur" placeholder="Prénom et nom du tuteur">
+                    </div>
+                    <div class="form-group">
+                        <label for="lien_parente">Lien de parenté</label>
+                        <input type="text" id="lien_parente" name="lien_parente" placeholder="Lien de parenté">
+                    </div>
                 </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="telephone">Téléphone</label>
-                    <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone">
-                </div>
-                <div class="form-group">
-                    <div class="upload-section">
-                        <div class="upload-icon">📄</div>
-                        <button class="upload-btn">Ajouter des document</button>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="adresse_tuteur">Adresse</label>
+                        <input type="text" id="adresse_tuteur" name="adresse_tuteur" placeholder="Adresse du tuteur">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone-tuteur">Téléphone</label>
+                        <input type="tel" id="telephone-tuteur" name="telephone_tuteur" placeholder="Téléphone du tuteur">
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header">
-                <h2 class="section-title">Informations du tuteur</h2>
-                <svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                </svg>
-            </div>
             
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="prenom-tuteur">Prénom(s) & nom</label>
-                    <input type="text" id="prenom-tuteur" name="nom_tuteur" placeholder="Prénom et nom du tuteur">
-                </div>
-                <div class="form-group">
-                    <label for="lien-parente">Lien de parenté</label>
-                    <input type="text" id="lien-parente" name="lien_parente" placeholder="Lien de parenté">
-                </div>
+            <div class="actions">
+                <a href="index.php?route=apprenants_attente" class="btn btn-cancel">Annuler</a>
+                <button type="submit" class="btn btn-submit">Enregistrer</button>
             </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="adresse-tuteur">Adresse</label>
-                    <input type="text" id="adresse-tuteur" name="adresse_tuteur" placeholder="Adresse du tuteur">
-                </div>
-                <div class="form-group">
-                    <label for="telephone-tuteur">Téléphone</label>
-                    <input type="tel" id="telephone-tuteur" name="telephone_tuteur" placeholder="Téléphone du tuteur">
-                </div>
-            </div>
-        </div>
-        
-        <div class="actions">
-            <button class="btn btn-cancel">Annuler</button>
-            <button class="btn btn-submit">Enregistrer</button>
-        </div>
+        </form>
     </div>
-
-</main>
-</div>

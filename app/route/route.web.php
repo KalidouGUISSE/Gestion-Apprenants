@@ -36,6 +36,7 @@ function loadController($route) : void {
         'importerExcel' => ['controller' => 'apprenant', 'action' => 'importerExcel'],
         'apprenants_attente' => ['controller' => 'apprenant', 'action' => 'page_apprenants'],
         'page_ajout_apprenant' => ['controller' => 'apprenant', 'action' => 'pageAjoutApprenant'],
+        'ajout_apprenant' => ['controller' => 'apprenant', 'action' => 'ajouterApprenant'],
     ];
     
     if (!array_key_exists($route, $controllerMapping)){
