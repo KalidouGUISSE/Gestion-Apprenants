@@ -79,13 +79,14 @@
     <main class="main-content">
         <!-- Header -->
         <?= $header ?>
-
+        
         <section class="content view-list">
-        <div class="content-container view-list">
-
-            <div class="content-header">
-                <div class="title">
-                <h1>Apprenants</h1>
+            <div class="content-container view-list">
+                
+                <div class="content-header">
+                    <div class="title">
+                        <h1>Apprenants</h1>
+                    
                 <p><?= $nbApprenants ?? 0 ?> apprenant<?= ($nbApprenants ?? 0) !== 1 ? 's' : '' ?></p>
                 </div>
             </div>
@@ -149,11 +150,22 @@
             </div>
 
             <div class="stat-cards-container view-list">
-        
+            <?php if (!empty($_SESSION['importreuie'])): ?>
+                <div style="color:green ;text-align: center; height: 100%; width: 70%; background-color:rgba(61, 150, 49, 0.38); font-size: 25px; font-weight: bold;" class="error message">
+                    <ul>
+                        <li><?= htmlspecialchars($_SESSION['importreuie']) ?></li>
+                    </ul>
+                </div>
+                <?php unset($_SESSION['importreuie']); ?>
+            <?php endif; ?>
             </div>
-
+                <?php  
+                    $color = '';
+                    if (($_REQUEST['route']) === 'apprenants_attente') {
+                    $color = 'red';
+                }?> 
             <!-- Table -->
-            <div class="table-container" style="width: 90rem;">
+            <div class="table-container" style="width: 90rem; ">
             <table class="promo-table">
                 <thead>
                     <tr>
@@ -194,7 +206,7 @@
                                     <img src="<?= $promotion['image'] ?: '../assets/images/default-promo.jpg' ?>" class="promo-img" alt="Promo">
                                 </td>
                                 <td><?= htmlspecialchars($promotion['matricule'] ?? 'N/A') ?></td>
-                                <td><?= htmlspecialchars($promotion['prenom'] ?? '-') ?></td>
+                                <td style=" color:<?= $color ?> "><?= htmlspecialchars($promotion['prenom'] ?? '-') ?></td>
                                 <td><?= htmlspecialchars($promotion['adresse'] ?? '-') ?></td>
                                 <td><?= htmlspecialchars($promotion['telephone'] ?? '-') ?>
                                 </td>
@@ -253,7 +265,7 @@
                 </div>
             </div>
             </div>
-        </div>
+            </div>
         </section>
     </main>
 </div>

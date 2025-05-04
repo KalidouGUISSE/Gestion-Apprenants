@@ -122,8 +122,7 @@ function validatePromotionImage(): array {
 // validator.service.php
 
 
-function gererreferentielValidationFunctionsErreurs(): array
-{
+function gererreferentielValidationFunctionsErreurs(): array{
     $referentielValidationFunctions = [
         'validateNomReferentiel' => function(?string $nom): array {
             if (!isNotEmpty($nom)) {
@@ -196,23 +195,20 @@ function validerApprenant(array $apprenant): array
 {
     $champsObligatoires = [
         'nom', 'prenom', 'adresse', 'telephone', 'email',
-        'idreferentiel', 'nom_tuteur', 'lien_parente',
-        'adresse_tuteur', 'telephone_tuteur', 'image'
+        'nom_tuteur', 'lien_parente',
     ];
 
     $erreurs = [];
 
     foreach ($champsObligatoires as $champ) {
         if (empty($apprenant[$champ])) {
-            $erreurs[] = "Le champ '$champ' est obligatoire.";
+            $erreurs[$champ] = "Le champ $champ est obligatoire.";
         }
     }
 
     if (!empty($erreurs)) {
         return ['success' => false, 'errors' => $erreurs];
     }
-
-
 
     return ['success' => true, 'apprenant' => $apprenant];
 }

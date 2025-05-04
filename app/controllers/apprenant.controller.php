@@ -26,7 +26,8 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 
 function dashboard() : void {
@@ -210,14 +211,16 @@ function importerExcel() : void {
             }
         }
 
-        writeData($data);
+        // writeData($data);
+        $importreuie = "Fichier importé et apprenants enregistrés avec succès !";
+        $_SESSION['importreuie'] = $importreuie;
         echo "Fichier importé et apprenants enregistrés avec succès !";
 
     } catch (Exception $e) {
         echo "Erreur lors de la lecture du fichier Excel : " . $e->getMessage();
     }
+    redirect('apprenants');
 
-    exit;
 }
 
 function pageAjoutApprenant() {
@@ -226,54 +229,156 @@ function pageAjoutApprenant() {
     require Includes::BASE_LAYOUT->value;
 }
 
-function ajouterApprenant() : void {
-    $data = readData();
-    $apprenants = $data["apprenants"] ?? [];
-    $listeattente = $data["listeattente"] ?? [];
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $newApprenant = [
-            'nom' => $_POST['nom'],
-            'prenom' => $_POST['prenom'],
-            'email' => $_POST['email'],
-            'telephone' => $_POST['telephone'],
-            'adresse' => $_POST['adresse'],
-            'nom_tuteur' => $_POST['nom_tuteur'],
-            'lien_parente' => $_POST['lien_parente'],
-            'adresse_tuteur' => $_POST['adresse_tuteur'],
-            'telephone_tuteur' => $_POST['telephone_tuteur']
-        ];
+
+function ajouterApprenant(): void {
+    require_once __DIR__ . '/../../vendor/autoload.php';
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        redirect('apprenants');
+        return;
     }
+    $data = readData();
+    $newApprenant = collectApprenantData($_POST, $_FILES);
 
     $resultat = validerApprenant($newApprenant);
-
     if ($resultat['success']) {
-        $nouvelApprenant = $resultat['apprenant'];
-        // L'enregistrer dans le fichier JSON ici
-        // Générer un matricule unique : AAAA-MM-XXXXX
-        $apprenant['matricule'] = strtoupper(substr($apprenant['nom'], 0, 2)) .
-        strtoupper(substr($apprenant['prenom'], 0, 2)) .
-        '-' . date('ym') . '-' . rand(10000, 99999);
-
-        // Initialiser les champs d’assiduité
-        $apprenant['Nombre_absences'] = 0;
-        $apprenant['Nombre_retards'] = 0;
-        $apprenant['Nombre_presence'] = 0;
-        $apprenant['Nombre_justifie'] = 0;
-
+        $newApprenant = enrichApprenantData($newApprenant);
         $data["apprenants"][] = $newApprenant;
         writeData($data);
+        if (envoyerEmailConfirmation($newApprenant)) {
+            $_SESSION['success'] = "Apprenant ajouté avec succès et email envoyé.";
+        } else {
+            $_SESSION['errors'] = ["L'envoi de l'e-mail a échoué."];
+        }
     } else {
         session_start(); // au début du fichier s'il n'y est pas déjà
         $_SESSION['errors'] = $resultat['errors'] ?? ['Une erreur inconnue s\'est produite.'];
-    var_dump($_SESSION['errors']);
-        die();
-        header('Location: index.php?route=page_ajout_apprenant');
-        exit;
+        var_dump($_SESSION['errors']['prenom']);
     }
-    // require_once __DIR__ . '/../views/apprenant/ajoutApprenant.php';
 
-    // header("Location: index.php?route=page_ajout_apprenant");
-    exit;
-    
+
+
+
+    $_SESSION['old'] = $_POST;
+    redirect('page_ajout_apprenant');
 }
+function collectApprenantData(array $post, array $files): array {
+    return [
+        'nom' => $post['nom'] ?? '',
+        'prenom' => $post['prenom'] ?? '',
+        'email' => $post['email'] ?? '',
+        'telephone' => $post['telephone'] ?? '',
+        'adresse' => $post['adresse'] ?? '',
+        'nom_tuteur' => $post['nom_tuteur'] ?? '',
+        'lien_parente' => $post['lien_parente'] ?? '',
+        'adresse_tuteur' => $post['adresse_tuteur'] ?? '',
+        'telephone_tuteur' => $post['telephone_tuteur'] ?? '',
+        'image' => $files['image']['name'] ?? '',
+    ];
+}
+function enrichApprenantData(array $apprenant): array {
+    $matricule = rand(1000, 9999);
+    $apprenant['matricule'] = "ECSA" . $matricule;
+    $apprenant['statut'] = "Actif";
+    $apprenant['Nombre_absences'] = 0;
+    $apprenant['Nombre_retards'] = 0;
+    $apprenant['Nombre_presence'] = 0;
+    $apprenant['Nombre_justifie'] = 0;
+
+    $apprenant['login'] = $apprenant['email'];
+    $motDePasse = substr(str_shuffle('abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8);
+    $apprenant['mot_de_passe'] = password_hash($motDePasse, PASSWORD_DEFAULT);
+    $apprenant['plain_mot_de_passe'] = $motDePasse; // utile temporairement pour l'email
+
+    return $apprenant;
+}
+function envoyerEmailConfirmation(array $apprenant): bool {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'kalidouguisse16@gmail.com';
+        $mail->Password = 'aoam kgod thzp boxc';// ⚠️ À externaliser dans un fichier de config sécurisé
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom('kalidouguisse16@gmail.com', 'L\'équipe pédagogique');
+        $mail->addAddress('kalidou.guisse@univ-thies.sn', "{$apprenant['prenom']} {$apprenant['nom']}");
+        $mail->isHTML(true);
+        $mail->Subject = 'Bienvenue sur la plateforme de formation';
+
+        $mail->Body = "Bonjour <strong>{$apprenant['prenom']} {$apprenant['nom']}</strong>,<br><br>" .
+                    "Votre compte a été créé avec succès.<br>" .
+                    "Voici vos identifiants de connexion :<br><br>" .
+                    "Login : <strong>{$apprenant['login']}</strong><br>" .
+                    "Mot de passe : <strong>{$apprenant['plain_mot_de_passe']}</strong><br><br>" .
+                    "Merci de vous connecter rapidement pour finaliser votre profil.<br><br>" .
+                    "Cordialement,<br>L'équipe pédagogique";
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        var_dump($e);
+        die();
+        error_log("Erreur envoi email : " . $mail->ErrorInfo);
+        return false;
+    }
+}
+
+
+// function ajouterApprenant() : void {
+//     $data = readData();
+//     $apprenants = $data["apprenants"] ?? [];
+//     $listeattente = $data["listeattente"] ?? [];
+
+//     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//         $newApprenant = [
+//             'nom' => $_POST['nom'],
+//             'prenom' => $_POST['prenom'],
+//             'email' => $_POST['email'],
+//             'telephone' => $_POST['telephone'],
+//             'adresse' => $_POST['adresse'],
+//             'nom_tuteur' => $_POST['nom_tuteur'],
+//             'lien_parente' => $_POST['lien_parente'],
+//             'adresse_tuteur' => $_POST['adresse_tuteur'],
+//             'telephone_tuteur' => $_POST['telephone_tuteur']
+//         ];
+//     }
+
+//     $resultat = validerApprenant($newApprenant);
+
+//     if ($resultat['success']) {
+//         $nouvelApprenant = $resultat['apprenant'];
+//         // L'enregistrer dans le fichier JSON ici
+//         // Générer un matricule unique : AAAA-MM-XXXXX
+//         $apprenant['matricule'] = strtoupper(substr($apprenant['nom'], 0, 2)) .
+//         strtoupper(substr($apprenant['prenom'], 0, 2)) .
+//         '-' . date('ym') . '-' . rand(10000, 99999);
+
+//         // Initialiser les champs d’assiduité
+//         $apprenant['Nombre_absences'] = 0;
+//         $apprenant['Nombre_retards'] = 0;
+//         $apprenant['Nombre_presence'] = 0;
+//         $apprenant['Nombre_justifie'] = 0;
+
+//         $data["apprenants"][] = $newApprenant;
+//         writeData($data);
+//     } else {
+//         session_start(); // au début du fichier s'il n'y est pas déjà
+//         $_SESSION['errors'] = $resultat['errors'] ?? ['Une erreur inconnue s\'est produite.'];
+//         var_dump($_SESSION['errors']['prenom']);
+//         // $ok = $_SESSION['errors'];
+//         // var_dump('ko');
+
+//         // die();
+//         // exit;
+//     }
+//     // require_once __DIR__ . '/../views/apprenant/ajoutApprenant.php';
+    
+//     header('Location: index.php?route=page_ajout_apprenant');
+//     // header("Location: index.php?route=page_ajout_apprenant");
+//     exit;
+    
+// }

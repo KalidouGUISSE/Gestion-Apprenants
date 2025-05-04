@@ -1,6 +1,7 @@
 <?php
 namespace App\Route;
 
+
 require_once "../app/enums/enum.link.php";
 use App\Enums\Includes;
 require_once Includes::ENUM_KEYS->value;
@@ -51,6 +52,7 @@ function loadController($route) : void {
     if (file_exists($controllerFile)) {
         require_once $controllerFile;
         $controller = "\\App\\Controllers\\{$actionName}";
+        // var_dump($_SESSION['errors']);
         $controller();
     } else {
         require_once "../app/controllers/error.controller.php";
