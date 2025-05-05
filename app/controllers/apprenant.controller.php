@@ -155,7 +155,6 @@ function telechargerPDF(): void {
     exit;
 }
 
-
 function importerExcel() : void {
     if (!isset($_FILES['excel_file']) || $_FILES['excel_file']['error'] !== UPLOAD_ERR_OK) {
         echo "Erreur de téléchargement du fichier.";
@@ -252,13 +251,10 @@ function ajouterApprenant(): void {
             $_SESSION['errors'] = ["L'envoi de l'e-mail a échoué."];
         }
     } else {
-        session_start(); // au début du fichier s'il n'y est pas déjà
+        session_start();
         $_SESSION['errors'] = $resultat['errors'] ?? ['Une erreur inconnue s\'est produite.'];
         var_dump($_SESSION['errors']['prenom']);
     }
-
-
-
 
     $_SESSION['old'] = $_POST;
     redirect('page_ajout_apprenant');
@@ -304,8 +300,8 @@ function envoyerEmailConfirmation(array $apprenant): bool {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('kalidouguisse16@gmail.com', 'L\'équipe pédagogique');
-        $mail->addAddress('kalidou.guisse@univ-thies.sn', "{$apprenant['prenom']} {$apprenant['nom']}");
+        $mail->setFrom('kalidouguisse16@gmail.com', 'L\'équipe ODC');
+        $mail->addAddress("{$apprenant['email']}", "{$apprenant['prenom']} {$apprenant['nom']}");
         $mail->isHTML(true);
         $mail->Subject = 'Bienvenue sur la plateforme de formation';
 
@@ -314,8 +310,8 @@ function envoyerEmailConfirmation(array $apprenant): bool {
                     "Voici vos identifiants de connexion :<br><br>" .
                     "Login : <strong>{$apprenant['login']}</strong><br>" .
                     "Mot de passe : <strong>{$apprenant['plain_mot_de_passe']}</strong><br><br>" .
-                    "Merci de vous connecter rapidement pour finaliser votre profil.<br><br>" .
-                    "Cordialement,<br>L'équipe pédagogique";
+                    "Merci de vous connecter rapidement pour finaliser votre profil : http://guisse.kalidou.sa.edu.sn:8125/index.php?route=login .<br><br>" .
+                    "Cordialement,<br>L'équipe ODC";
 
         $mail->send();
         return true;

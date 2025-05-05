@@ -32,7 +32,6 @@ $GLOBALS[Keys::MODEL_FUNCTION->value] = [
     Keys::WRITE_DATA->value => $writeData 
 ];
 
-// Wrappers pour accéder aux fonctions anonymes
 function readData() : array {
     return $GLOBALS[Keys::MODEL_FUNCTION->value][Keys::READ_DATA->value]();
 }
@@ -41,8 +40,7 @@ function writeData($data) : int|false {
     return $GLOBALS[Keys::MODEL_FUNCTION->value][Keys::WRITE_DATA->value]($data);
 }
 
-function getStatistiques($jsonFilePath)
-{
+function getStatistiques($jsonFilePath){
     if (!file_exists($jsonFilePath)) {
         return [
             'totalPromotions' => 0,
@@ -104,3 +102,9 @@ function getNombreApprenants(array $promotion): int {
 function getNombreReferentiels(array $promotion): int {
     return isset($promotion['referentiels']) ? count($promotion['referentiels']) : 0;
 }
+
+
+
+
+
+

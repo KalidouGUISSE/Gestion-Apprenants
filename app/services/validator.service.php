@@ -195,7 +195,6 @@ function validerApprenant(array $apprenant): array
 {
     $champsObligatoires = [
         'nom', 'prenom', 'adresse', 'telephone', 'email',
-        'nom_tuteur', 'lien_parente',
     ];
 
     $erreurs = [];
@@ -209,6 +208,8 @@ function validerApprenant(array $apprenant): array
     if (!empty($erreurs)) {
         return ['success' => false, 'errors' => $erreurs];
     }
+
+
 
     return ['success' => true, 'apprenant' => $apprenant];
 }

@@ -52,7 +52,6 @@ function loadController($route) : void {
     if (file_exists($controllerFile)) {
         require_once $controllerFile;
         $controller = "\\App\\Controllers\\{$actionName}";
-        // var_dump($_SESSION['errors']);
         $controller();
     } else {
         require_once "../app/controllers/error.controller.php";

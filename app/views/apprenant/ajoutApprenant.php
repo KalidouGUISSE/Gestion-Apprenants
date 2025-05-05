@@ -1,5 +1,7 @@
 
 <?php
+    var_dump( $_SESSION);
+    // die;
     require_once __DIR__ . '/../daguite/aside.php';
     require_once __DIR__ . '/../daguite/header.php';
 ?>

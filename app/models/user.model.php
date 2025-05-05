@@ -14,18 +14,32 @@ require_once "model.php";
 $findUserByCredentials = function($username, $password) : array|null {
     $data = readData();
 
+    // $checkUser = function ($users, $role) use ($username, $password) {
+    //     $matched = array_values(array_filter($users, function ($user) use ($username, $password) {
+    //         return $user[Keys::LOGIN->value] === $username && $user[Keys::PASSWORD->value] === $password;
+    //     }));
+
+    //     if (!empty($matched)) {
+    //         $matched[0][Keys::ROLE->value] = $role;
+    //         return $matched[0];
+    //     }
+
+    //     return null;
+    // };
+    
     $checkUser = function ($users, $role) use ($username, $password) {
-        $matched = array_values(array_filter($users, function ($user) use ($username, $password) {
-            return $user[Keys::LOGIN->value] === $username && $user[Keys::PASSWORD->value] === $password;
-        }));
-
-        if (!empty($matched)) {
-            $matched[0][Keys::ROLE->value] = $role;
-            return $matched[0];
+        foreach ($users as $user) {
+            if (
+                $user[Keys::LOGIN->value] === $username &&
+                password_verify($password, $user[Keys::PASSWORD->value])
+            ) {
+                $user[Keys::ROLE->value] = $role;
+                return $user;
+            }
         }
-
         return null;
     };
+    
 
     // Vérifie chaque type d'utilisateur en une ligne chacun
     if (isset($data[Keys::ADMINS->value]) && $user = $checkUser($data[Keys::ADMINS->value], Keys::ADMIN->value)) return $user;
