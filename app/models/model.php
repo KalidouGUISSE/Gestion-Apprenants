@@ -106,5 +106,19 @@ function getNombreReferentiels(array $promotion): int {
 
 
 
+function getAllApprenants(): array {
+    $data = readData();
+    return $data['apprenants'] ?? [];
+}
 
+
+function getApprenantKeyByLogin(string $login) : int|null {
+    $apprenants = getAllApprenants();
+    foreach ($apprenants as $key => $apprenant) {
+        if (isset($apprenant['login']) && $apprenant['login'] === $login) {
+            return $key + 1; // +1 pour correspondre à l'indexation 1-based
+        }
+    }
+    return null;
+}
 

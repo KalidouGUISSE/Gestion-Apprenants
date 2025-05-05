@@ -219,7 +219,6 @@ function importerExcel() : void {
         echo "Erreur lors de la lecture du fichier Excel : " . $e->getMessage();
     }
     redirect('apprenants');
-
 }
 
 function pageAjoutApprenant() {
@@ -284,8 +283,10 @@ function enrichApprenantData(array $apprenant): array {
 
     $apprenant['login'] = $apprenant['email'];
     $motDePasse = substr(str_shuffle('abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8);
-    $apprenant['mot_de_passe'] = password_hash($motDePasse, PASSWORD_DEFAULT);
+    $apprenant['password'] = password_hash($motDePasse, PASSWORD_DEFAULT);
     $apprenant['plain_mot_de_passe'] = $motDePasse; // utile temporairement pour l'email
+
+    $apprenant['ok'] = true;
 
     return $apprenant;
 }

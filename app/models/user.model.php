@@ -13,34 +13,22 @@ use App\Enums\View;
 require_once "model.php";
 $findUserByCredentials = function($username, $password) : array|null {
     $data = readData();
-
-    // $checkUser = function ($users, $role) use ($username, $password) {
-    //     $matched = array_values(array_filter($users, function ($user) use ($username, $password) {
-    //         return $user[Keys::LOGIN->value] === $username && $user[Keys::PASSWORD->value] === $password;
-    //     }));
-
-    //     if (!empty($matched)) {
-    //         $matched[0][Keys::ROLE->value] = $role;
-    //         return $matched[0];
-    //     }
-
-    //     return null;
-    // };
     
     $checkUser = function ($users, $role) use ($username, $password) {
-        foreach ($users as $user) {
-            if (
+        $matched = array_values(array_filter($users, function ($user) use ($username, $password) {
+            return isset($user[Keys::LOGIN->value], $user[Keys::PASSWORD->value]) &&
                 $user[Keys::LOGIN->value] === $username &&
-                password_verify($password, $user[Keys::PASSWORD->value])
-            ) {
-                $user[Keys::ROLE->value] = $role;
-                return $user;
-            }
+                password_verify($password, $user[Keys::PASSWORD->value]);
+        }));
+    
+        if (!empty($matched)) {
+            $matched[0][Keys::ROLE->value] = $role;
+            return $matched[0];
         }
+    
         return null;
     };
     
-
     // Vérifie chaque type d'utilisateur en une ligne chacun
     if (isset($data[Keys::ADMINS->value]) && $user = $checkUser($data[Keys::ADMINS->value], Keys::ADMIN->value)) return $user;
     if (isset($data[Keys::VIGILES->value]) && $user = $checkUser($data[Keys::VIGILES->value], Keys::VIGILE->value)) return $user;

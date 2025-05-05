@@ -38,6 +38,8 @@ function loadController($route) : void {
         'apprenants_attente' => ['controller' => 'apprenant', 'action' => 'page_apprenants'],
         'page_ajout_apprenant' => ['controller' => 'apprenant', 'action' => 'pageAjoutApprenant'],
         'ajout_apprenant' => ['controller' => 'apprenant', 'action' => 'ajouterApprenant'],
+        'creerLogin' => ['controller' => 'auth', 'action' => 'creerLogin'],
+        'changerpassword' => ['controller' => 'auth', 'action' => 'changerPassword'],
     ];
     
     if (!array_key_exists($route, $controllerMapping)){
