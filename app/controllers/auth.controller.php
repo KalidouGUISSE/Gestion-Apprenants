@@ -57,13 +57,13 @@ function authenticate() : void {
             $apprenants = getAllApprenants();
             $key = getApprenantKeyByLogin($username);
 
-            if ($key !== null && isset($apprenants[$key]) && isset($apprenants[$key]['ok']) && $apprenants[$key]['ok'] === true) {
-                unset($apprenants[$key]['ok']);
+            if ($key !== null && isset($apprenants[$key]['ok']) && $apprenants[$key]['ok'] === true) {
+                $apprenants[$key]['ok'] = false;
                 $data = readData();
                 $data['apprenants'] = $apprenants;
                 // writeData($data);
-            }else{
-                redirect(View::LOGIN->value);
+            }elseif ($apprenants[$key]['ok'] === false) {
+                redirect($redirectRoute);
                 return;
             }
         }
@@ -71,7 +71,6 @@ function authenticate() : void {
     } else {
         \App\Services\setFlash(Keys::ERROR->value, $smsErrors[Keys::INVALID_CREDENTIALS->value]);
         redirect(View::LOGIN->value);
-        
     }
 }
 
@@ -116,31 +115,41 @@ function creerLogin(){
     require_once Includes::BASE_LAYOUT->value;
 }
 
-function changerPassword(){
-    $errorMessage = \App\Services\getFlash(Keys::ERROR->value);
+function changerPassword() {
     $newpassword = getPostData('newpassword');
     $confirmernewpassword = getPostData('confirmernewpassword');
+    $login = getPostData('login');
 
-    if ($newpassword !== $confirmernewpassword) {
-        $_SESSION['errorMessage'] = "Les mots de passe ne correspondent pas.";
-        creerLogin();
+    if (empty($login)) {
+        $_SESSION['errorMessage'] = "Le login est vide.";
+        creerLogin(); 
         return;
-    }
+    }   
 
-    if ($newpassword !== null && $confirmernewpassword !== null) {
-        $apprenants = getAllApprenants();
-        $key = getApprenantKeyByLogin($login);
-    }
-
-    if ($key !== null && isset($apprenants[$key]) && isset($apprenants[$key]['ok']) && $apprenants[$key]['ok'] === true) {
-        unset($apprenants[$key]['ok']);
-        redirect(View::LOGIN->value);
-    }else{
-        redirect(View::LOGIN->value);
+    if (empty($newpassword) || $newpassword !== $confirmernewpassword) {
+        $_SESSION['errorMessage'] = "Les mots de passe ne correspondent pas.";
+        creerLogin(); 
         return;
     }
 
     $data = readData();
-    $data['apprenants'] = $apprenants;
-    writeData($data);
+    $apprenants = getAllApprenants();
+    $key = getApprenantKeyByLogin($login);
+    $key = $key -1;
+    if ($key !== null && isset($apprenants[$key])) {
+        // Hash du nouveau mot de passe
+        $apprenants[$key]['password'] = password_hash($newpassword, PASSWORD_DEFAULT);
+
+        // Mise à jour du tableau principal
+        $data['apprenants'] = $apprenants;
+
+        // Écriture dans le fichier
+        writeData($data);
+
+        // Redirection
+        redirect('apprenant_dashboard');
+    } else {
+        $_SESSION['errorMessage'] = "Utilisateur introuvable.";
+        creerLogin();
+    }
 }

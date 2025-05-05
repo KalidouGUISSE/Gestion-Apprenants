@@ -1,0 +1,9 @@
+admin {
+    login : admin1@gmail.com
+    password : admin123
+} 
+
+apprenant {
+    login : kalidou.guisse@univ-thies.sn
+    password : nPbGkqvm
+} 

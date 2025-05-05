@@ -103,14 +103,10 @@ function getNombreReferentiels(array $promotion): int {
     return isset($promotion['referentiels']) ? count($promotion['referentiels']) : 0;
 }
 
-
-
-
 function getAllApprenants(): array {
     $data = readData();
     return $data['apprenants'] ?? [];
 }
-
 
 function getApprenantKeyByLogin(string $login) : int|null {
     $apprenants = getAllApprenants();
@@ -121,4 +117,3 @@ function getApprenantKeyByLogin(string $login) : int|null {
     }
     return null;
 }
-

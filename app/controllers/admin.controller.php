@@ -307,10 +307,6 @@ function ajouterReferentiels(): void {
     redirect('referentiels');
 }
 
-
-
-
-
 function addReferentielToPromotion($referentielNom, array &$newPromo): void {
     if (!empty($referentielNom)) {
         $newPromo['referentiels'][] = [
@@ -339,32 +335,6 @@ function assignerRef(){
     require Includes::BASE_LAYOUT->value;
 }
 
-// function affecterreftopromo(): void {
-//     $data = readData();
-//     $promotions = $data['promotions'] ?? [];
-//     $promotionEnCours = getPromotionEnCours($promotions);
-//     $referentielsEncour = $promotionEnCours['referentiels'] ?? [];
-//     $referentielsNonAffecte = $data['referentielsNonAffecte'] ?? [];
-
-//     foreach ($referentielsNonAffecte as $key => $monreferentiel) {
-//         if (isset($_POST['a_affecter']) && $_POST['a_affecter'] === $monreferentiel['nom']) {
-//             $referentielsEncour[] = $referentielsNonAffecte[$key];
-//             unset($referentielsNonAffecte[$key]);
-//         }
-//     }
-
-//     $data['referentielsNonAffecte'] = $referentielsNonAffecte;
-//     $promotionEnCours['referentiels'] = $referentielsEncour;
-
-//     foreach ($promotions as $key => $promotion) {
-//         if ($promotion['etat'] === 'encours') {
-//             $data['promotions'][$key] = $promotionEnCours;
-//             break;
-//         }
-//     }
-//     writeData($data);
-//     redirect('assigner_ref');
-// }
 
 function de_affecterreftopromo(): void {
     $montab = $_POST;

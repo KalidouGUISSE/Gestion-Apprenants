@@ -252,7 +252,6 @@ function ajouterApprenant(): void {
     } else {
         session_start();
         $_SESSION['errors'] = $resultat['errors'] ?? ['Une erreur inconnue s\'est produite.'];
-        var_dump($_SESSION['errors']['prenom']);
     }
 
     $_SESSION['old'] = $_POST;
@@ -262,7 +261,7 @@ function collectApprenantData(array $post, array $files): array {
     return [
         'nom' => $post['nom'] ?? '',
         'prenom' => $post['prenom'] ?? '',
-        'email' => $post['email'] ?? '',
+        'login' => $post['email'] ?? '',
         'telephone' => $post['telephone'] ?? '',
         'adresse' => $post['adresse'] ?? '',
         'nom_tuteur' => $post['nom_tuteur'] ?? '',
@@ -281,7 +280,6 @@ function enrichApprenantData(array $apprenant): array {
     $apprenant['Nombre_presence'] = 0;
     $apprenant['Nombre_justifie'] = 0;
 
-    $apprenant['login'] = $apprenant['email'];
     $motDePasse = substr(str_shuffle('abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8);
     $apprenant['password'] = password_hash($motDePasse, PASSWORD_DEFAULT);
     $apprenant['plain_mot_de_passe'] = $motDePasse; // utile temporairement pour l'email
@@ -317,65 +315,7 @@ function envoyerEmailConfirmation(array $apprenant): bool {
         $mail->send();
         return true;
     } catch (Exception $e) {
-        var_dump($e);
-        die();
         error_log("Erreur envoi email : " . $mail->ErrorInfo);
         return false;
     }
 }
-
-
-// function ajouterApprenant() : void {
-//     $data = readData();
-//     $apprenants = $data["apprenants"] ?? [];
-//     $listeattente = $data["listeattente"] ?? [];
-
-//     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//         $newApprenant = [
-//             'nom' => $_POST['nom'],
-//             'prenom' => $_POST['prenom'],
-//             'email' => $_POST['email'],
-//             'telephone' => $_POST['telephone'],
-//             'adresse' => $_POST['adresse'],
-//             'nom_tuteur' => $_POST['nom_tuteur'],
-//             'lien_parente' => $_POST['lien_parente'],
-//             'adresse_tuteur' => $_POST['adresse_tuteur'],
-//             'telephone_tuteur' => $_POST['telephone_tuteur']
-//         ];
-//     }
-
-//     $resultat = validerApprenant($newApprenant);
-
-//     if ($resultat['success']) {
-//         $nouvelApprenant = $resultat['apprenant'];
-//         // L'enregistrer dans le fichier JSON ici
-//         // Générer un matricule unique : AAAA-MM-XXXXX
-//         $apprenant['matricule'] = strtoupper(substr($apprenant['nom'], 0, 2)) .
-//         strtoupper(substr($apprenant['prenom'], 0, 2)) .
-//         '-' . date('ym') . '-' . rand(10000, 99999);
-
-//         // Initialiser les champs d’assiduité
-//         $apprenant['Nombre_absences'] = 0;
-//         $apprenant['Nombre_retards'] = 0;
-//         $apprenant['Nombre_presence'] = 0;
-//         $apprenant['Nombre_justifie'] = 0;
-
-//         $data["apprenants"][] = $newApprenant;
-//         writeData($data);
-//     } else {
-//         session_start(); // au début du fichier s'il n'y est pas déjà
-//         $_SESSION['errors'] = $resultat['errors'] ?? ['Une erreur inconnue s\'est produite.'];
-//         var_dump($_SESSION['errors']['prenom']);
-//         // $ok = $_SESSION['errors'];
-//         // var_dump('ko');
-
-//         // die();
-//         // exit;
-//     }
-//     // require_once __DIR__ . '/../views/apprenant/ajoutApprenant.php';
-    
-//     header('Location: index.php?route=page_ajout_apprenant');
-//     // header("Location: index.php?route=page_ajout_apprenant");
-//     exit;
-    
-// }

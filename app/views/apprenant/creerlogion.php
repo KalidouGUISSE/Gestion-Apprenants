@@ -4,14 +4,21 @@
     </div>
     <h3>Bienvenue sur<br> <span>Ecole du code Sonatel Academy</span></h3>
     
-        <?php if (!empty($errorMessage)): ?>
+        <?php if (!empty($_SESSION['errorMessage'])): ?>
             <div  class="error message">
-                <?= $errorMessage ?>
+                <?php print_r($_SESSION['errorMessage']) ;?>
+                <?php unset($_SESSION['errorMessage']); ?>
             </div>
-        <?php endif; ?>    
+        <?php endif;?>    
 
     <form action="index.php?route=changerpassword"  method="post">
         <h1>Se connecter</h1>
+
+        <div class="form-group">
+            <label for="login">Login</label>
+            <input id="login" type="text" name="login" placeholder="Votre login"/>
+            <span class="invalid"></span>
+        </div>
 
         <div class="form-group">
             <label for="newpassword">Nouveau password</label>
@@ -24,7 +31,9 @@
             <input type="password" id="confirmernewpassword" name="confirmernewpassword" placeholder="Confirnmer Password"/>
             <span class="invalid"></span>
         </div>
-        <button type="submit" class="login-btn" name="auth">Se connecter</button>
+        <a href="index.php?route=login" class="forget-password">Se connecter</a>
+
+        <button type="submit" class="login-btn" name="auth">Creer</button>
     </form>
 </div>
 

@@ -115,13 +115,31 @@
                 <div class="qr-text">Code de présence personnel</div>
                 <div class="qr-id">DW25041</div>
             </div>
+            
             <a href="index.php?route=creerLogin">
                 <div class="dashboard-title">
                     Changer de password
                 </div>
             </a>
         </div>
-
+        <?php
+        $qrData = sprintf(
+            "%s %s %s %s ",
+            'were',
+            'ert',
+            'wer',
+            'wer',
+            // $apprenant['nom'] ?? '',
+            // $apprenant['prenom'] ?? '',
+            // $apprenant['email'] ?? '',
+            // $apprenant['telephone'] ?? '',
+        );
+        // Générer l'URL du QR code
+        $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode($qrData) . "&size=200x200";
+        ?>
+        <div class="qr-code">
+            <img src="<?= $qrCodeUrl ?>" alt="QR Code">
+        </div>
     </main>
 </body>
 </html>
