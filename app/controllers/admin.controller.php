@@ -307,38 +307,6 @@ function ajouterReferentiels(): void {
     redirect('referentiels');
 }
 
-
-
-function assignerReferentiels(): void {
-    // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //     $data = readData();
-    //     $referentiels = $data['referentielsNonAffecte'] ?? [];
-    //     $promoNom = $_POST['promo'] ?? '';
-    //     $referentielNom = $_POST['referentiel'] ?? '';
-
-    //     // Vérification de l'existence de la promo
-    //     $promotion = array_filter($data['promotions'], function ($promo) use ($promoNom) {
-    //         return isset($promo['idnom']) && $promo['idnom'] === $promoNom;
-    //     });
-
-    //     if (empty($promotion)) {
-    //         // Gérer l'erreur : promotion non trouvée
-    //         return;
-    //     }
-
-    //     // Ajout du référentiel à la promotion
-    //     addReferentielToPromotion($referentielNom, $promotion[0]);
-
-    //     // Sauvegarde des données
-    //     writeData($data);
-    // }
-    // redirect('promotions');
-
-
-}
-
-
-
 function addReferentielToPromotion($referentielNom, array &$newPromo): void {
     if (!empty($referentielNom)) {
         $newPromo['referentiels'][] = [
@@ -367,32 +335,6 @@ function assignerRef(){
     require Includes::BASE_LAYOUT->value;
 }
 
-// function affecterreftopromo(): void {
-//     $data = readData();
-//     $promotions = $data['promotions'] ?? [];
-//     $promotionEnCours = getPromotionEnCours($promotions);
-//     $referentielsEncour = $promotionEnCours['referentiels'] ?? [];
-//     $referentielsNonAffecte = $data['referentielsNonAffecte'] ?? [];
-
-//     foreach ($referentielsNonAffecte as $key => $monreferentiel) {
-//         if (isset($_POST['a_affecter']) && $_POST['a_affecter'] === $monreferentiel['nom']) {
-//             $referentielsEncour[] = $referentielsNonAffecte[$key];
-//             unset($referentielsNonAffecte[$key]);
-//         }
-//     }
-
-//     $data['referentielsNonAffecte'] = $referentielsNonAffecte;
-//     $promotionEnCours['referentiels'] = $referentielsEncour;
-
-//     foreach ($promotions as $key => $promotion) {
-//         if ($promotion['etat'] === 'encours') {
-//             $data['promotions'][$key] = $promotionEnCours;
-//             break;
-//         }
-//     }
-//     writeData($data);
-//     redirect('assigner_ref');
-// }
 
 function de_affecterreftopromo(): void {
     $montab = $_POST;

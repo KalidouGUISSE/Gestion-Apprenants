@@ -3,7 +3,7 @@
         {
             "id": 1,
             "login": "admin1@gmail.com",
-            "password": "admin123",
+            "password": "$2y$10$3HLmTjfT85shyKPfXzd2C.8U.PCsQIWF8H0NPmU9Ra10hhP5C6lRS",
             "image": ""
         }
     ],
@@ -11,13 +11,13 @@
         {
             "id": 1,
             "login": "vigile1@gmail.com",
-            "password": "vigile123",
+            "password": "$2y$10$GvvQJq2pXBCgVTPpvrNYI.FH1U59uA4x3Dkz2dV4PUtSC\/MevtmSK",
             "image": ""
         },
         {
             "id": 2,
             "login": "vigile2",
-            "password": "vigile456",
+            "password": "$2y$10$\/nWD6OJuMYQenX6C7oA3M.uzxmjNHmkSZ3Rce1YoGHnNbJA64yh96",
             "image": ""
         }
     ],
@@ -318,220 +318,95 @@
             "modules": []
         }
     ],
-    "statistiques": {
-        "total_promotions": 5,
-        "promotions_actives": 3,
-        "nombre_apprenants_promotion_courante": 150,
-        "nombre_referentiels_promotion_courante": 1
-    },
     "apprenants": [
         {
+            "image": "uploads\/apprenants\/apprenant1.jpg",
+            "matricule": "ECSA0001",
+            "nom": "Nom1",
+            "prenom": "Prenom1",
+            "adresse": "Adresse1",
+            "telephone": "7709000001",
+            "login": "apprenant1@example.com",
+            "idreferentiel": "1",
+            "nom_tuteur": "Tuteur1",
+            "lien_parente": "Parent",
+            "adresse_tuteur": "Adresse Tuteur1",
+            "telephone_tuteur": "7808000001",
+            "nombre_absences": "0",
+            "nombre_retards": "0",
+            "nombre_presence": "11",
+            "statut": "Actif"
+        },
+        {
+            "image": "uploads\/apprenants\/apprenant20.jpg",
+            "matricule": "ECSA0020",
+            "nom": "Nom20",
+            "prenom": "Prenom20",
+            "adresse": "Adresse20",
+            "telephone": "7709000020",
+            "login": "apprenant20@example.com",
+            "idreferentiel": "1",
+            "nom_tuteur": "Tuteur20",
+            "lien_parente": "Parent",
+            "adresse_tuteur": "Adresse Tuteur20",
+            "telephone_tuteur": "7808000020",
+            "nombre_absences": "0",
+            "nombre_retards": "0",
+            "nombre_presence": "11",
+            "statut": "Actif"
+        },
+        {
+            "nom": "Gui",
+            "prenom": "Kal",
+            "telephone": "784458786",
+            "adresse": "Diourbel",
+            "nom_tuteur": "",
+            "lien_parente": "",
+            "adresse_tuteur": "",
+            "telephone_tuteur": "",
+            "image": "",
+            "matricule": "ECSA4122",
+            "statut": "Actif",
+            "Nombre_absences": 0,
+            "Nombre_retards": 0,
+            "Nombre_presence": 0,
+            "Nombre_justifie": 0,
+            "login": "kalidou.guisse@univ-thies.sn",
+            "password": "$2y$10$\/ybR.Cta9R9HQFCkEk1MrermBT3FxvD4aS3bMMJbMQm72O5DbqDA2"
+        },
+        {
+            "nom": "Gui",
+            "prenom": "Kal",
+            "email": "kalidou.guisse@univ-thies.sn",
+            "telephone": "784458786",
+            "adresse": "Diourbel",
+            "nom_tuteur": "",
+            "lien_parente": "",
+            "adresse_tuteur": "",
+            "telephone_tuteur": "",
+            "image": "",
+            "matricule": "ECSA7845",
+            "statut": "Actif",
+            "Nombre_absences": 0,
+            "Nombre_retards": 0,
+            "Nombre_presence": 0,
+            "Nombre_justifie": 0,
+            "login": "kalidou.guisse@univ-thies.sn",
+            "password": "$2y$10$MEFmtvEmZCsDpNelKZ6dAOR4aRpnMMLaqkOuEavanPWyy7v1yeOXS",
+            "ok": true,
+            "plain_mot_de_passe": "nPbGkqvm"
+        }
+    ],
+    "listeattente": [
+        {
             "image": "uploads\/apprenants\/moussa.jpg",
-            "matricule": "62345678",
+            "matricule": "2",
             "nom": "Diop",
             "prenom": "Fatou",
             "adresse": "Dakar",
             "telephone": "770987654",
             "email": "moussa.sow@gmail.com",
             "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/moussa.jpg",
-            "matricule": "52345678",
-            "nom": "Sow",
-            "prenom": "Moussa",
-            "adresse": "Dakar",
-            "telephone": "770987654",
-            "email": "moussa.sow@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/awa.jpg",
-            "matricule": "42345678",
-            "nom": "Ba",
-            "prenom": "Awa",
-            "adresse": "Dakar",
-            "telephone": "771112233",
-            "email": "awa.ba@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/fatou.jpg",
-            "matricule": "32345678",
-            "nom": "Diop",
-            "prenom": "Fatou",
-            "adresse": "Dakar",
-            "telephone": "770123456",
-            "email": "fatou.diop@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/moussa.jpg",
-            "matricule": "22345678",
-            "nom": "Sow",
-            "prenom": "Moussa",
-            "adresse": "Dakar",
-            "telephone": "770987654",
-            "email": "moussa.sow@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/awa.jpg",
-            "matricule": "12345678",
-            "nom": "Ba",
-            "prenom": "Awa",
-            "adresse": "Dakar",
-            "telephone": "771112233",
-            "email": "awa.ba@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/ibrahima.jpg",
-            "matricule": "72345678",
-            "nom": "Ndiaye",
-            "prenom": "Ibrahima",
-            "adresse": "Pikine",
-            "telephone": "770445566",
-            "email": "ibrahima.ndiaye@gmail.com",
-            "idreferentiel": "2",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/khady.jpg",
-            "matricule": "82345678",
-            "nom": "Fall",
-            "prenom": "Khady",
-            "adresse": "Gu\u00e9diawaye",
-            "telephone": "771223344",
-            "email": "khady.fall@gmail.com",
-            "idreferentiel": "2",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/cheikh.jpg",
-            "matricule": "92345678",
-            "nom": "Gueye",
-            "prenom": "Cheikh",
-            "adresse": "Rufisque",
-            "telephone": "770998877",
-            "email": "cheikh.gueye@gmail.com",
-            "idreferentiel": "3",
-            "statut": "Inactif"
-        },
-        {
-            "image": "uploads\/apprenants\/aminata.jpg",
-            "matricule": "03345678",
-            "nom": "Sarr",
-            "prenom": "Aminata",
-            "adresse": "Thiaroye",
-            "telephone": "770123789",
-            "email": "aminata.sarr@gmail.com",
-            "idreferentiel": "3",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/moussa.jpg",
-            "matricule": "52345678",
-            "nom": "Sow",
-            "prenom": "Moussa",
-            "adresse": "Dakar",
-            "telephone": "770987654",
-            "email": "moussa.sow@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/awa.jpg",
-            "matricule": "42345678",
-            "nom": "Ba",
-            "prenom": "Awa",
-            "adresse": "Dakar",
-            "telephone": "771112233",
-            "email": "awa.ba@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/fatou.jpg",
-            "matricule": "32345678",
-            "nom": "Diop",
-            "prenom": "Fatou",
-            "adresse": "Dakar",
-            "telephone": "770123456",
-            "email": "fatou.diop@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/moussa.jpg",
-            "matricule": "22345678",
-            "nom": "Sow",
-            "prenom": "Moussa",
-            "adresse": "Dakar",
-            "telephone": "770987654",
-            "email": "moussa.sow@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/awa.jpg",
-            "matricule": "12345678",
-            "nom": "Ba",
-            "prenom": "Awa",
-            "adresse": "Dakar",
-            "telephone": "771112233",
-            "email": "awa.ba@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/ibrahima.jpg",
-            "matricule": "72345678",
-            "nom": "Ndiaye",
-            "prenom": "Ibrahima",
-            "adresse": "Pikine",
-            "telephone": "770445566",
-            "email": "ibrahima.ndiaye@gmail.com",
-            "idreferentiel": "2",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/khady.jpg",
-            "matricule": "82345678",
-            "nom": "Fall",
-            "prenom": "Khady",
-            "adresse": "Gu\u00e9diawaye",
-            "telephone": "771223344",
-            "email": "khady.fall@gmail.com",
-            "idreferentiel": "2",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/cheikh.jpg",
-            "matricule": "92345678",
-            "nom": "Gueye",
-            "prenom": "Cheikh",
-            "adresse": "Rufisque",
-            "telephone": "770998877",
-            "email": "cheikh.gueye@gmail.com",
-            "idreferentiel": "3",
-            "statut": "Inactif"
-        },
-        {
-            "image": "uploads\/apprenants\/aminata.jpg",
-            "matricule": "03345678",
-            "nom": "Sarr",
-            "prenom": "Aminata",
-            "adresse": "Thiaroye",
-            "telephone": "770123789",
-            "email": "aminata.sarr@gmail.com",
-            "idreferentiel": "3",
             "statut": "Actif"
         },
         {
@@ -577,72 +452,12 @@
             "email": "fatou.diop@gmail.com",
             "idreferentiel": "1",
             "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/moussa.jpg",
-            "matricule": "222345678",
-            "nom": "Sow",
-            "prenom": "Moussa",
-            "adresse": "Dakar",
-            "telephone": "770987654",
-            "email": "moussa.sow@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/awa.jpg",
-            "matricule": "123456178",
-            "nom": "Ba",
-            "prenom": "Awa",
-            "adresse": "Dakar",
-            "telephone": "771112233",
-            "email": "awa.ba@gmail.com",
-            "idreferentiel": "1",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/ibrahima.jpg",
-            "matricule": "723452678",
-            "nom": "Ndiaye",
-            "prenom": "Ibrahima",
-            "adresse": "Pikine",
-            "telephone": "770445566",
-            "email": "ibrahima.ndiaye@gmail.com",
-            "idreferentiel": "2",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/khady.jpg",
-            "matricule": "823452678",
-            "nom": "Fall",
-            "prenom": "Khady",
-            "adresse": "Gu\u00e9diawaye",
-            "telephone": "771223344",
-            "email": "khady.fall@gmail.com",
-            "idreferentiel": "2",
-            "statut": "Actif"
-        },
-        {
-            "image": "uploads\/apprenants\/cheikh.jpg",
-            "matricule": "312",
-            "nom": "Gueye",
-            "prenom": "Cheikh",
-            "adresse": "Rufisque",
-            "telephone": "770998877",
-            "email": "cheikh.gueye@gmail.com",
-            "idreferentiel": "3",
-            "statut": "Inactif"
-        },
-        {
-            "image": "uploads\/apprenants\/aminata.jpg",
-            "matricule": "033456781",
-            "nom": "Sarr",
-            "prenom": "Aminata",
-            "adresse": "Thiaroye",
-            "telephone": "770123789",
-            "email": "aminata.sarr@gmail.com",
-            "idreferentiel": "3",
-            "statut": "Actif"
         }
-    ]
+    ],
+    "statistiques": {
+        "total_promotions": 5,
+        "promotions_actives": 3,
+        "nombre_apprenants_promotion_courante": 150,
+        "nombre_referentiels_promotion_courante": 1
+    }
 }

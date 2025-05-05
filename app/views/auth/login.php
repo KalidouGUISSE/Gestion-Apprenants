@@ -26,6 +26,7 @@
         </div>
 
         <a href="index.php?route=forgot_password" class="forget-password">Mot de passe oublié?</a>
+        <a href="index.php?route=creerLogin" class="forget-password">changer Password</a>
 
         <button type="submit" class="login-btn" name="auth">Se connecter</button>
     </form>

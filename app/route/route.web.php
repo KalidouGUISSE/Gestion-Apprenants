@@ -1,6 +1,7 @@
 <?php
 namespace App\Route;
 
+
 require_once "../app/enums/enum.link.php";
 use App\Enums\Includes;
 require_once Includes::ENUM_KEYS->value;
@@ -34,6 +35,11 @@ function loadController($route) : void {
         'telechargerExcel' => ['controller' => 'apprenant', 'action' => 'telechargerExcel'],
         'telechargerPDF'=> ['controller' => 'apprenant', 'action' => 'telechargerPDF'],
         'importerExcel' => ['controller' => 'apprenant', 'action' => 'importerExcel'],
+        'apprenants_attente' => ['controller' => 'apprenant', 'action' => 'page_apprenants'],
+        'page_ajout_apprenant' => ['controller' => 'apprenant', 'action' => 'pageAjoutApprenant'],
+        'ajout_apprenant' => ['controller' => 'apprenant', 'action' => 'ajouterApprenant'],
+        'creerLogin' => ['controller' => 'auth', 'action' => 'creerLogin'],
+        'changerpassword' => ['controller' => 'auth', 'action' => 'changerPassword'],
     ];
     
     if (!array_key_exists($route, $controllerMapping)){

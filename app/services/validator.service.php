@@ -25,33 +25,6 @@ function isPositiveInt($value): bool {
     return filter_var($value, FILTER_VALIDATE_INT) !== false && (int)$value > 0;
 }
 
-// function validateReferentiel(array $ref): array {
-//     $errors = [];
-
-//     if (!isNotEmpty($ref['idPromotion'])) {
-//         $errors['idPromotion'] = "L'année de la promotion est requise.";
-//     }
-
-//     if (!isNotEmpty($ref['nom'])) {
-//         $errors['nom'] = "Le nom du référentiel est requis.";
-//     }
-
-//     if (!isPositiveInt($ref['nombre_de_modules'])) {
-//         $errors['nombre_de_modules'] = "Le nombre de modules doit être un entier positif.";
-//     }
-
-//     if (!isNotEmpty($ref['description_du_referentiel'])) {
-//         $errors['description_du_referentiel'] = "La description est requise.";
-//     }
-
-//     if (!isPositiveInt($ref['Nombre_apprenant'])) {
-//         $errors['Nombre_apprenant'] = "Le nombre d’apprenants doit être un entier positif.";
-//     }
-
-//     return $errors;
-// }
-
-
 function validatePromotion(array $promotion): array {
     $errors = [];
 
@@ -149,8 +122,7 @@ function validatePromotionImage(): array {
 // validator.service.php
 
 
-function gererreferentielValidationFunctionsErreurs(): array
-{
+function gererreferentielValidationFunctionsErreurs(): array{
     $referentielValidationFunctions = [
         'validateNomReferentiel' => function(?string $nom): array {
             if (!isNotEmpty($nom)) {
@@ -217,6 +189,33 @@ function gererreferentielValidationFunctionsErreurs(): array
 
     return $referentielValidationFunctions;
 }
+
+
+function validerApprenant(array $apprenant): array
+{
+    $champsObligatoires = [
+        'nom', 'prenom', 'adresse', 'telephone', 'email',
+    ];
+
+    $erreurs = [];
+
+    foreach ($champsObligatoires as $champ) {
+        if (empty($apprenant[$champ])) {
+            $erreurs[$champ] = "Le champ $champ est obligatoire.";
+        }
+    }
+
+    if (!empty($erreurs)) {
+        return ['success' => false, 'errors' => $erreurs];
+    }
+
+
+
+    return ['success' => true, 'apprenant' => $apprenant];
+}
+
+
+
 
 
 

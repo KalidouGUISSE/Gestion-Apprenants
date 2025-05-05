@@ -12,11 +12,18 @@ require_once includes::SESSION_SERVICE->value;
 require_once Includes::USER_MODEL->value;
 require_once Includes::VALIDATORE_SERVICE->value;
 require_once Includes::ERROR_FUNCTION->value;
+require_once Includes::MODEL->value;
+
 
 use App\Enums\Keys;
 use App\Enums\View;
 use App\Enums\Message;
 use function App\Translate\Fr\getErrors;
+use function App\Models\readData;
+use function App\Models\writeData;
+use function App\Models\getAllApprenants;
+use function App\Models\getApprenantKeyByLogin;
+
 
 function loginForm() : void {
     $errorMessage = \App\Services\getFlash(Keys::ERROR->value);
@@ -28,15 +35,12 @@ function authenticate() : void {
     $username = getPostData(Keys::USERNAME->value);
     $password = getPostData(Keys::PASSWORD->value);
     
-    var_dump($username);
-    print_r($username);
-
-
     if (!\App\Services\validateLogin($username, $password)) {
         \App\Services\setFlash(Keys::ERROR->value, $smsErrors[Keys::LOGIN_REQUIRED->value]);
         redirect(View::LOGIN->value);
         return;
     }
+    
 
     $user = \App\Models\findUserByCredentials($username, $password);
     
@@ -49,17 +53,24 @@ function authenticate() : void {
             Keys::APPRENANT->value  => View::APPRENAMT_DASHBOARD->value,
             default   => View::LOGIN->value,
         };
+        if ($user[Keys::ROLE->value] === Keys::APPRENANT->value) {
+            $apprenants = getAllApprenants();
+            $key = getApprenantKeyByLogin($username);
 
+            if ($key !== null && isset($apprenants[$key]['ok']) && $apprenants[$key]['ok'] === true) {
+                $apprenants[$key]['ok'] = false;
+                $data = readData();
+                $data['apprenants'] = $apprenants;
+                // writeData($data);
+            }elseif ($apprenants[$key]['ok'] === false) {
+                redirect($redirectRoute);
+                return;
+            }
+        }
         redirect($redirectRoute);
     } else {
-        var_dump($username);
-        print_r($username);
-        var_dump($password);
-        print_r($password);
-        echo 'wertyuio';
         \App\Services\setFlash(Keys::ERROR->value, $smsErrors[Keys::INVALID_CREDENTIALS->value]);
         redirect(View::LOGIN->value);
-        
     }
 }
 
@@ -68,7 +79,6 @@ function logout(): void {
     redirect(View::LOGIN->value);
 }
 
-use function App\Models\readData;
 
 function forgotPassword() : void {
     $view = View::AUTCH_FORGOT_PASSWORD->value;
@@ -98,4 +108,48 @@ function handlePasswordReset() : void{
 
     $view = View::AUTCH_FORGOT_PASSWORD->value;
     require_once Includes::BASE_LAYOUT->value;
+}
+
+function creerLogin(){
+    $view = 'apprenant/creerlogion';
+    require_once Includes::BASE_LAYOUT->value;
+}
+
+function changerPassword() {
+    $newpassword = getPostData('newpassword');
+    $confirmernewpassword = getPostData('confirmernewpassword');
+    $login = getPostData('login');
+
+    if (empty($login)) {
+        $_SESSION['errorMessage'] = "Le login est vide.";
+        creerLogin(); 
+        return;
+    }   
+
+    if (empty($newpassword) || $newpassword !== $confirmernewpassword) {
+        $_SESSION['errorMessage'] = "Les mots de passe ne correspondent pas.";
+        creerLogin(); 
+        return;
+    }
+
+    $data = readData();
+    $apprenants = getAllApprenants();
+    $key = getApprenantKeyByLogin($login);
+    $key = $key -1;
+    if ($key !== null && isset($apprenants[$key])) {
+        // Hash du nouveau mot de passe
+        $apprenants[$key]['password'] = password_hash($newpassword, PASSWORD_DEFAULT);
+
+        // Mise à jour du tableau principal
+        $data['apprenants'] = $apprenants;
+
+        // Écriture dans le fichier
+        writeData($data);
+
+        // Redirection
+        redirect('apprenant_dashboard');
+    } else {
+        $_SESSION['errorMessage'] = "Utilisateur introuvable.";
+        creerLogin();
+    }
 }
